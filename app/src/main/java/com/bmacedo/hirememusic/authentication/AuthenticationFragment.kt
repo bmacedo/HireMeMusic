@@ -34,7 +34,7 @@ class AuthenticationFragment : Fragment() {
         loginButton.setOnClickListener {
             viewModel.login(this).observe(this) { viewState ->
                 when (viewState) {
-                    AuthenticationViewModel.ViewState.Loading -> loading.show()
+                    AuthenticationViewModel.ViewState.Loading -> handleAuthenticationLoading()
                     AuthenticationViewModel.ViewState.Cancelled -> handleAuthenticationCancelled()
                     is AuthenticationViewModel.ViewState.Success -> handleAuthenticationSuccess()
                     is AuthenticationViewModel.ViewState.Error -> handleAuthenticationError(viewState.message)
@@ -42,6 +42,11 @@ class AuthenticationFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun handleAuthenticationLoading() {
+        loading.show()
+        loginButton.visibility = View.INVISIBLE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -58,11 +63,12 @@ class AuthenticationFragment : Fragment() {
     private fun handleAuthenticationError(error: String?) {
         Timber.d(error)
         loading.hide()
+        loginButton.visibility = View.VISIBLE
     }
 
     private fun handleAuthenticationCancelled() {
-        // TODO
         loading.hide()
+        loginButton.visibility = View.VISIBLE
     }
 
 }

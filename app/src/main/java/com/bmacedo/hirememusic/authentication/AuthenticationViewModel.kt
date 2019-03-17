@@ -58,7 +58,6 @@ class AuthenticationViewModel(
             handleAuthenticationError()
         } else {
             saveToken(accessToken)
-            viewState.postValue(ViewState.Success(accessToken))
         }
     }
 
@@ -87,6 +86,7 @@ class AuthenticationViewModel(
     private fun saveToken(token: String) {
         viewModelScope.launch {
             authRepository.saveToken(token)
+            viewState.postValue(ViewState.Success)
         }
     }
 
@@ -96,7 +96,7 @@ class AuthenticationViewModel(
     sealed class ViewState {
         object Loading : ViewState()
         object Cancelled : ViewState()
-        class Success(val token: String) : ViewState()
+        object Success : ViewState()
         class Error(val message: String) : ViewState()
     }
 
