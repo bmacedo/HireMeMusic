@@ -9,9 +9,13 @@
     <string name="search_label">Search</string>
     <string name="search_hint">Artist</string>
 
+    <!-- Search Results -->
+    <string name="search_list_label">Search</string>
+
     <!-- Spotify SDK Integration -->
     <string name="com_spotify_sdk_redirect_scheme">hirememusic</string>
     <string name="com_spotify_sdk_redirect_host">callback</string>
     <string name="generic_error">An unknown error occurred. Please try one more time.</string>
+
 
 </resources>
