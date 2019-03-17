@@ -1,0 +1,11 @@
+<resources>
+    <!-- General -->
+    <string name="app_name">Hire Me Music</string>
+
+    <!-- Main Activity -->
+    <string name="log_in_label">Log in</string>
+
+    <!-- Spotify SDK Integration -->
+    <string name="com_spotify_sdk_redirect_scheme">hirememusic</string>
+    <string name="com_spotify_sdk_redirect_host">callback</string>
+</resources>

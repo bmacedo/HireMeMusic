@@ -1,0 +1,8 @@
+def getSpotifyApiKey() {
+    println("Getting SPOTIFY_API_KEY: ${System.getenv("SPOTIFY_API_KEY")}")
+    return System.getenv("SPOTIFY_API_KEY") ?: 'b1e254e83b374e1682b611a5bd2a390f'
+}
+
+ext {
+    getSpotifyApiKey = this.&getSpotifyApiKey
+}
