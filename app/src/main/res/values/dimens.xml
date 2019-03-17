@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="search_title_margin_vertical">32dp</dimen>
+    <dimen name="search_bar_margin">20dp</dimen>
+    <dimen name="search_hint_margin_vertical">4dp</dimen>
+    <dimen name="search_hint_margin_horizontal">10dp</dimen>
+</resources>

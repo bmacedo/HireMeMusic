@@ -2,10 +2,16 @@
     <!-- General -->
     <string name="app_name">Hire Me Music</string>
 
-    <!-- Main Activity -->
+    <!-- Authentication -->
     <string name="log_in_label">Log in</string>
+
+    <!-- Search -->
+    <string name="search_label">Search</string>
+    <string name="search_hint">Artist</string>
 
     <!-- Spotify SDK Integration -->
     <string name="com_spotify_sdk_redirect_scheme">hirememusic</string>
     <string name="com_spotify_sdk_redirect_host">callback</string>
+    <string name="generic_error">An unknown error occurred. Please try one more time.</string>
+
 </resources>

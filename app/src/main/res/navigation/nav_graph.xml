@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/initialFragment">
+
+    <fragment
+        android:id="@+id/initialFragment"
+        android:name="com.bmacedo.hirememusic.init.InitialFragment"
+        android:label="@string/app_name">
+        <action
+            android:id="@+id/action_initialFragment_to_authenticationFragment"
+            app:destination="@id/authenticationFragment"
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_initialFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:popUpTo="@+id/nav_graph" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/authenticationFragment"
+        android:name="com.bmacedo.hirememusic.authentication.AuthenticationFragment"
+        android:label="@string/log_in_label">
+        <action
+            android:id="@+id/action_authenticationFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:popUpTo="@+id/nav_graph" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.bmacedo.hirememusic.search.SearchFragment"
+        android:label="@string/app_name" />
+
+</navigation>
