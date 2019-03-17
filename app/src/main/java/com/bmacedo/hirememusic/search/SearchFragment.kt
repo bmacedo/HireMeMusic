@@ -1,8 +1,8 @@
 package com.bmacedo.hirememusic.search
 
 import androidx.annotation.ContentView
-import androidx.fragment.app.Fragment
 import com.bmacedo.hirememusic.R
+import com.bmacedo.hirememusic.base.BaseFragment
 
 @ContentView(R.layout.fragment_search)
-class SearchFragment : Fragment()
+class SearchFragment : BaseFragment()

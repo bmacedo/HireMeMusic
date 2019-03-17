@@ -35,6 +35,7 @@ ext {
             navigation      : "2.0.0",
             lifecycle       : "2.1.0-alpha03",
             coroutines      : "1.1.1",
+            dagger          : "2.20",
             spotifySdk      : "1.1.0",
             timber          : "4.7.1",
             jUnit           : "4.12",
@@ -62,6 +63,11 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines"
 
+    // Dagger
+    implementation "com.google.dagger:dagger:$versions.dagger"
+    implementation "com.google.dagger:dagger-android:$versions.dagger"
+    implementation "com.google.dagger:dagger-android-support:$versions.dagger"
+
     // Third Party SDK
     implementation "com.spotify.android:auth:$versions.spotifySdk"
 
@@ -70,6 +76,8 @@ dependencies {
 
     // Annotation processor libs
     kapt "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle"
+    kapt "com.google.dagger:dagger-compiler:$versions.dagger"
+    kapt "com.google.dagger:dagger-android-processor:$versions.dagger"
 
     // Unit Test
     testImplementation "junit:junit:$versions.jUnit"

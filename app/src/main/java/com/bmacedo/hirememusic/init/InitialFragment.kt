@@ -1,24 +1,21 @@
 package com.bmacedo.hirememusic.init
 
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.View
 import androidx.annotation.ContentView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.bmacedo.hirememusic.R
-import com.bmacedo.hirememusic.authentication.AuthenticationRepository
+import com.bmacedo.hirememusic.base.BaseFragment
 import com.bmacedo.hirememusic.util.observe
 import kotlinx.android.synthetic.main.fragment_initial.*
+import javax.inject.Inject
 
 @ContentView(R.layout.fragment_initial)
-class InitialFragment : Fragment() {
+class InitialFragment : BaseFragment() {
 
-    //TODO @Inject
-    private val viewModelFactory: InitialViewModel.Factory by lazy {
-        InitialViewModel.Factory(AuthenticationRepository(PreferenceManager.getDefaultSharedPreferences(context)))
-    }
+    @Inject
+    lateinit var viewModelFactory: InitialViewModel.Factory
 
     private val viewModel: InitialViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(InitialViewModel::class.java)

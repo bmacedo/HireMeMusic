@@ -2,28 +2,23 @@ package com.bmacedo.hirememusic.authentication
 
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.View
 import androidx.annotation.ContentView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.bmacedo.hirememusic.R
+import com.bmacedo.hirememusic.base.BaseFragment
 import com.bmacedo.hirememusic.util.observe
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import kotlinx.android.synthetic.main.fragment_authentication.*
 import timber.log.Timber
+import javax.inject.Inject
 
 @ContentView(R.layout.fragment_authentication)
-class AuthenticationFragment : Fragment() {
+class AuthenticationFragment : BaseFragment() {
 
-    //TODO @Inject
-    private val viewModelFactory: AuthenticationViewModel.Factory by lazy {
-        AuthenticationViewModel.Factory(
-            AuthenticationRepository(PreferenceManager.getDefaultSharedPreferences(context)),
-            context!!.resources
-        )
-    }
+    @Inject
+    lateinit var viewModelFactory: AuthenticationViewModel.Factory
 
     private val viewModel: AuthenticationViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(AuthenticationViewModel::class.java)
