@@ -18,6 +18,7 @@
     <!-- Spotify SDK Integration -->
     <string name="com_spotify_sdk_redirect_scheme">hirememusic</string>
     <string name="com_spotify_sdk_redirect_host">callback</string>
+    <string name="ok">OK</string>
 
 
 </resources>

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.ChangeBounds
 import com.bmacedo.hirememusic.R
@@ -28,6 +29,7 @@ class SearchResultsFragment : BaseFragment() {
 
     private val listController = SearchResultsListController()
     private var debounce: EditTextDebounce? = null
+    private var dialog: AlertDialog? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         sharedElementEnterTransition = ChangeBounds().apply {
@@ -62,6 +64,7 @@ class SearchResultsFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         debounce?.unwatch()
+        dialog?.dismiss()
     }
 
     private fun observeViewState() {
@@ -81,11 +84,18 @@ class SearchResultsFragment : BaseFragment() {
 
     private fun handleAuthenticationError() {
         context?.let { ctx ->
-            // TODO: finish the dialog creation
-            val dialog = AlertDialog.Builder(ctx)
+            dialog = AlertDialog.Builder(ctx)
                 .setMessage(R.string.authentication_error_message)
+                .setPositiveButton(R.string.ok) { _, _ ->
+                    navigateToLogin()
+                }
                 .create()
+            dialog?.show()
         }
+    }
+
+    private fun navigateToLogin() {
+        findNavController().navigate(SearchResultsFragmentDirections.actionSearchResultsFragmentToAuthenticationFragment())
     }
 
     private fun handleError(message: String) {
