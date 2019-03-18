@@ -12,7 +12,7 @@ class AuthenticationRepository(private val preferences: SharedPreferences) {
      */
     suspend fun isLoggedIn(): Boolean =
         withContext(Dispatchers.IO) {
-            val token = preferences.getString(ACCESS_TOKEN_KEY, "")
+            val token = getToken()
             !token.isNullOrBlank()
         }
 
@@ -26,6 +26,11 @@ class AuthenticationRepository(private val preferences: SharedPreferences) {
             }
         }
     }
+
+    /**
+     * Retrieve the current access token
+     */
+    fun getToken(): String? = preferences.getString(ACCESS_TOKEN_KEY, "")
 
     companion object {
         private const val ACCESS_TOKEN_KEY = "spotify_access_token"
