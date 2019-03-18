@@ -8,5 +8,18 @@ data class Artist(
     @Json(name = "href") val artistUrl: String = "",
     @Json(name = "id") val id: String = "",
     @Json(name = "images") val images: List<Image> = emptyList(),
-    @Json(name = "name") val name: List<Image> = emptyList()
-)
+    @Json(name = "name") val name: String = ""
+) {
+
+    /**
+     * Returns the URL for the smallest image available for the artist
+     */
+    fun thumbnailUrl(): String? {
+        if (images.isNotEmpty()) {
+            val thumbnail = images.firstOrNull { it.height == 300 } ?: images.firstOrNull()
+            return thumbnail?.url
+        }
+        return null
+    }
+
+}

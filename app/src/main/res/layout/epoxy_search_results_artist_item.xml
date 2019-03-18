@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.bmacedo.hirememusic.searchResults.model.Artist" />
+
+        <import type="android.view.View.OnClickListener" />
+
+        <variable
+            name="artist"
+            type="Artist" />
+
+        <variable
+            name="onArtistClicked"
+            type="OnClickListener" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/artist_card_external_margin"
+        android:layout_marginBottom="@dimen/artist_card_external_margin"
+        android:onClick="@{onArtistClicked}"
+        app:elevation="@dimen/card_elevation">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/artist_image_height">
+
+            <ImageView
+                android:id="@+id/artist_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/artist_image_height"
+                android:layout_marginTop="@dimen/artist_vertical_spacing"
+                android:layout_marginBottom="@dimen/artist_vertical_spacing"
+                android:background="@color/colorAccent"
+                android:contentDescription="@{artist.name}"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{artist.thumbnailUrl()}"
+                tools:src="@drawable/ic_launcher_foreground" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/artist_image_height"
+                android:background="@drawable/gradient" />
+
+            <TextView
+                android:id="@+id/artist_name"
+                style="@style/SearchResultTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|start"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="bottom|start"
+                android:paddingStart="@dimen/artist_card_internal_margin"
+                android:paddingTop="@dimen/artist_card_internal_margin"
+                android:paddingEnd="@dimen/artist_card_internal_margin"
+                android:paddingBottom="@dimen/artist_card_internal_margin"
+                android:text="@{artist.name}"
+                tools:text="Pink Floyd" />
+
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

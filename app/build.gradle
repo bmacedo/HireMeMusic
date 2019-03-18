@@ -25,6 +25,9 @@ android {
     kapt {
         correctErrorTypes = true
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 ext {
@@ -39,6 +42,9 @@ ext {
             okHttp          : "3.12.1",
             retrofit        : "2.5.0",
             retrofitAdapter : "0.9.2",
+            epoxy           : "3.3.0",
+            glide           : "4.8.0",
+            moshi           : "1.8.0",
             spotifySdk      : "1.1.0",
             timber          : "4.7.1",
             jUnit           : "4.12",
@@ -78,7 +84,19 @@ dependencies {
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
     implementation "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
+    implementation "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$versions.retrofitAdapter"
+
+    // Epoxy
+    implementation "com.airbnb.android:epoxy:$versions.epoxy"
+    implementation "com.airbnb.android:epoxy-databinding:$versions.epoxy"
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$versions.glide"
+    implementation "com.github.bumptech.glide:okhttp3-integration:$versions.glide"
+
+    // Moshi
+    implementation "com.squareup.moshi:moshi-kotlin:$versions.moshi"
 
     // Spotify SDK
     implementation "com.spotify.android:auth:$versions.spotifySdk"
@@ -90,6 +108,8 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle"
     kapt "com.google.dagger:dagger-compiler:$versions.dagger"
     kapt "com.google.dagger:dagger-android-processor:$versions.dagger"
+    kapt "com.airbnb.android:epoxy-processor:$versions.epoxy"
+    kapt "com.github.bumptech.glide:compiler:$versions.glide"
 
     // Unit Test
     testImplementation "junit:junit:$versions.jUnit"
