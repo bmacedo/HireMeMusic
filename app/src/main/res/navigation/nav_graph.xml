@@ -40,6 +40,13 @@
     <fragment
         android:id="@+id/searchResultsFragment"
         android:name="com.bmacedo.hirememusic.searchResults.SearchResultsFragment"
-        android:label="@string/search_list_label" />
+        android:label="@string/search_list_label">
+        <action
+            android:id="@+id/action_searchResultsFragment_to_authenticationFragment"
+            app:destination="@id/authenticationFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

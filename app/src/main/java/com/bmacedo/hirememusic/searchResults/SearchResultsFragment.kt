@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.ChangeBounds
+import com.bmacedo.hirememusic.R
 import com.bmacedo.hirememusic.base.BaseFragment
 import com.bmacedo.hirememusic.searchResults.model.Artist
 import com.bmacedo.hirememusic.util.EditTextDebounce
@@ -71,8 +73,18 @@ class SearchResultsFragment : BaseFragment() {
     private fun refreshUi(viewState: SearchResultsViewModel.ViewState?) {
         when (viewState) {
             is SearchResultsViewModel.ViewState.Success -> handleSuccess(viewState.isLoading, viewState.artists)
+            is SearchResultsViewModel.ViewState.AuthenticationError -> handleAuthenticationError()
             is SearchResultsViewModel.ViewState.Error -> handleError(viewState.message)
             null -> throw IllegalStateException("SearchResultsViewState should not be null")
+        }
+    }
+
+    private fun handleAuthenticationError() {
+        context?.let { ctx ->
+            // TODO: finish the dialog creation
+            val dialog = AlertDialog.Builder(ctx)
+                .setMessage(R.string.authentication_error_message)
+                .create()
         }
     }
 
@@ -82,7 +94,7 @@ class SearchResultsFragment : BaseFragment() {
     }
 
     private fun handleSuccess(isLoading: Boolean, artists: List<Artist>) {
-        if (isLoading) {
+        if (isLoading && artists.isNotEmpty()) {
             showLoading()
         } else {
             hideLoading()
@@ -91,7 +103,14 @@ class SearchResultsFragment : BaseFragment() {
     }
 
     private fun updateList(artists: List<Artist>) {
-        listController.update(artists)
+        if (artists.isEmpty()) {
+            searchResultList.visibility = View.INVISIBLE
+            searchResultsEmptyState.visibility = View.VISIBLE
+        } else {
+            searchResultList.visibility = View.VISIBLE
+            searchResultsEmptyState.visibility = View.INVISIBLE
+            listController.update(artists)
+        }
     }
 
     private fun hideLoading() {

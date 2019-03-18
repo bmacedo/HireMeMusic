@@ -4,8 +4,11 @@ import android.content.res.Resources
 import androidx.lifecycle.*
 import com.bmacedo.hirememusic.R
 import com.bmacedo.hirememusic.searchResults.model.Artist
+import com.bmacedo.hirememusic.searchResults.model.SearchResult
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class SearchResultsViewModel(
     private val searchResultsRepository: SearchResultsRepository,
@@ -23,16 +26,18 @@ class SearchResultsViewModel(
         if (job != null) {
             job?.cancel()
         }
-        viewState.postValue(ViewState.Success(isLoading = true, artists = emptyList()))
+        viewState.postValue(ViewState.Success(isLoading = true, artists = latestLResults()))
         job = viewModelScope.launch {
             latestQuery = query
             try {
                 val results = searchResultsRepository.searchArtists(query)
-                val artists = results.artists.items
-                viewState.postValue(ViewState.Success(isLoading = false, artists = artists))
+                handleSuccess(results)
+            } catch (cancellationException: CancellationException) {
+                // nothing to do here. Suppress the exception since this is the normal flow
+            } catch (httpException: HttpException) {
+                handleNetworkError(httpException)
             } catch (exception: Exception) {
-                val errorMessage = exception.message ?: resources.getString(R.string.generic_error)
-                viewState.postValue(ViewState.Error(errorMessage))
+                handleGenericError(exception)
             }
         }
     }
@@ -56,16 +61,47 @@ class SearchResultsViewModel(
      */
     fun viewState(): LiveData<ViewState> = viewState
 
+    private fun handleSuccess(results: SearchResult) {
+        val artists = results.artists.items
+        viewState.postValue(ViewState.Success(isLoading = false, artists = artists))
+    }
+
+    private fun handleGenericError(exception: Exception) {
+        val errorMessage = exception.message ?: resources.getString(R.string.generic_error)
+        viewState.postValue(ViewState.Error(errorMessage))
+    }
+
+    private fun handleNetworkError(httpException: HttpException) {
+        if (httpException.code() == 401) {
+            viewState.postValue(ViewState.AuthenticationError)
+        } else {
+            val errorMessage = resources.getString(R.string.generic_error)
+            viewState.postValue(ViewState.Error(errorMessage))
+        }
+    }
+
+    private fun latestLResults(): List<Artist> {
+        val state = viewState.value
+        if (state is ViewState.Success) {
+            return state.artists
+        }
+        return emptyList()
+    }
+
     /**
      * Possible states for this View
      */
     sealed class ViewState {
-
+        // Success may include loading as well for pagination
         data class Success(
             val isLoading: Boolean = false,
             val artists: List<Artist> = emptyList()
         ) : ViewState()
 
+        // Error thrown when the user token is no longer valid
+        object AuthenticationError : ViewState()
+
+        // Generic error
         data class Error(val message: String) : ViewState()
     }
 
