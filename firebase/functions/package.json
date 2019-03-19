@@ -1,0 +1,32 @@
+{
+  "name": "HireMeMusic-SpotifyAuth",
+  "version": "1.0.0",
+  "description": "Spotify Authorization Grant Flow for Android",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "",
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "keywords": [],
+  "author": "Bernardo Macedo",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^2.0.1",
+    "body-parser": "^1.18.3",
+    "express": "^4.14.0",
+    "promise": "^7.1.1",
+    "spotify-web-api-node": "^4.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.12.0",
+    "eslint-plugin-promise": "^4.0.1"
+  },
+  "engines": {
+    "node": "8"
+  }
+}
