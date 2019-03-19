@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.bmacedo.hirememusic.R
 import com.bmacedo.hirememusic.base.BaseFragment
+import com.bmacedo.hirememusic.util.navigateSafe
 import com.bmacedo.hirememusic.util.observe
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import kotlinx.android.synthetic.main.fragment_authentication.*
@@ -52,7 +53,7 @@ class AuthenticationFragment : BaseFragment() {
 
 
     private fun handleAuthenticationSuccess() {
-        findNavController().navigate(AuthenticationFragmentDirections.actionAuthenticationFragmentToSearchFragment())
+        findNavController().navigateSafe(AuthenticationFragmentDirections.actionAuthenticationFragmentToSearchFragment())
     }
 
     private fun handleAuthenticationError(error: String?) {

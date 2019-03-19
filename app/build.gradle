@@ -13,7 +13,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.bmacedo.hirememusic.HireMeMusicTestRunner"
         resValue 'string', "SPOTIFY_API_KEY", "\"${getSpotifyApiKey().trim()}\""
     }
     buildTypes {
@@ -21,6 +21,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     kapt {
         correctErrorTypes = true
@@ -49,6 +53,9 @@ ext {
             spotifySdk      : "1.1.0",
             timber          : "4.7.1",
             jUnit           : "4.12",
+            mockito         : "2.23.4",
+            mockitoKotlin   : "1.6.0",
+            dexOpener       : "2.0.1",
             testRunner      : "1.1.2-alpha02",
             espresso        : "3.2.0-alpha02"
     ]
@@ -117,8 +124,25 @@ dependencies {
 
     // Unit Test
     testImplementation "junit:junit:$versions.jUnit"
+    testImplementation "org.mockito:mockito-core:$versions.mockito"
+    testImplementation "com.nhaarman:mockito-kotlin:$versions.mockitoKotlin"
+    testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutines"
 
     // Integration Test
-    androidTestImplementation "androidx.test:runner:$versions.testRunner"
+    androidTestImplementation "com.nhaarman:mockito-kotlin:$versions.mockitoKotlin"
+    androidTestImplementation "org.mockito:mockito-android:$versions.mockito"
+    androidTestImplementation "com.github.tmurakami:dexopener:$versions.dexOpener"
     androidTestImplementation "androidx.test.espresso:espresso-core:$versions.espresso"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$versions.espresso"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$versions.espresso"
+    androidTestImplementation "androidx.test.espresso:espresso-accessibility:$versions.espresso"
+    androidTestImplementation "androidx.test.espresso:espresso-idling-resource:$versions.espresso"
+    androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:$versions.espresso"
+    androidTestImplementation "androidx.test.espresso.idling:idling-net:$versions.espresso"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutines"
+    androidTestImplementation "androidx.test:runner:$versions.testRunner"
+    androidTestImplementation "androidx.test:rules:$versions.testRunner"
+
 }

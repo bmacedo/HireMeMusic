@@ -14,21 +14,45 @@
         android:layout_margin="@dimen/search_toolbar_margin"
         android:transitionName="searchResultTransition">
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/searchField"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:imeOptions="actionSearch"
-            app:backgroundTint="@android:color/transparent"
-            android:maxLines="1"
-            android:layout_gravity="center"
-            android:drawableEnd="@drawable/ic_baseline_search_24px"
-            android:gravity="center"
-            android:hint="@string/search_hint"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
             android:paddingStart="@dimen/search_hint_margin_horizontal"
             android:paddingTop="@dimen/search_hint_margin_vertical"
             android:paddingEnd="@dimen/search_hint_margin_horizontal"
-            android:paddingBottom="@dimen/search_hint_margin_vertical" />
+            android:paddingBottom="@dimen/search_hint_margin_vertical">
+
+            <ImageView
+                android:id="@+id/searchButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center_vertical|end"
+                android:contentDescription="@string/search_label"
+                android:paddingStart="@dimen/search_button_margin_horizontal"
+                android:paddingEnd="@dimen/search_button_margin_horizontal"
+                android:src="@drawable/ic_baseline_search_24px" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/searchField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_toStartOf="@id/searchButton"
+                android:gravity="center"
+                android:imeOptions="actionSearch"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:singleLine="true"
+                app:backgroundTint="@android:color/transparent">
+
+                <requestFocus />
+
+            </androidx.appcompat.widget.AppCompatEditText>
+
+        </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
 

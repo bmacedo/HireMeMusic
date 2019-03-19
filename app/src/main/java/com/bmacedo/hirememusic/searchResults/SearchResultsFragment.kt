@@ -1,9 +1,12 @@
 package com.bmacedo.hirememusic.searchResults
 
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -12,7 +15,7 @@ import androidx.transition.ChangeBounds
 import com.bmacedo.hirememusic.R
 import com.bmacedo.hirememusic.base.BaseFragment
 import com.bmacedo.hirememusic.searchResults.model.Artist
-import com.bmacedo.hirememusic.util.EditTextDebounce
+import com.bmacedo.hirememusic.util.navigateSafe
 import com.bmacedo.hirememusic.util.observe
 import kotlinx.android.synthetic.main.fragment_search_results.*
 import javax.inject.Inject
@@ -28,7 +31,6 @@ class SearchResultsFragment : BaseFragment() {
     }
 
     private val listController = SearchResultsListController()
-    private var debounce: EditTextDebounce? = null
     private var dialog: AlertDialog? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -48,28 +50,45 @@ class SearchResultsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        searchResultList.layoutManager = LinearLayoutManager(context)
-        searchResultList.adapter = listController.adapter
-        searchResultsSwipeToRefresh.setOnRefreshListener {
-            viewModel.resetSearch()
-        }
-        debounce = EditTextDebounce.create(searchField)
-        debounce?.watch(object : EditTextDebounce.DebounceCallback {
-            override fun onFinished(result: String) {
-                viewModel.queryArtist(result)
-            }
-        }, 500L)
+        setUpList()
+        observeQueryChange()
+        showKeyboard()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        debounce?.unwatch()
         dialog?.dismiss()
     }
 
     private fun observeViewState() {
         viewModel.viewState().observe(this) { viewState ->
             refreshUi(viewState)
+        }
+    }
+
+    private fun observeQueryChange() {
+        searchButton.setOnClickListener {
+            searchArtist(searchField.text.toString())
+        }
+        searchField.setOnEditorActionListener { textView, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                searchArtist(textView.text.toString())
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
+    }
+
+    private fun searchArtist(query: String) {
+        viewModel.queryArtist(query)
+        hideKeyboard()
+    }
+
+    private fun setUpList() {
+        searchResultList.layoutManager = LinearLayoutManager(context)
+        searchResultList.adapter = listController.adapter
+        searchResultsSwipeToRefresh.setOnRefreshListener {
+            viewModel.resetSearch()
         }
     }
 
@@ -83,9 +102,10 @@ class SearchResultsFragment : BaseFragment() {
     }
 
     private fun handleAuthenticationError() {
+        hideKeyboard()
         context?.let { ctx ->
             dialog = AlertDialog.Builder(ctx)
-                .setMessage(R.string.authentication_error_message)
+                .setMessage(com.bmacedo.hirememusic.R.string.authentication_error_message)
                 .setPositiveButton(R.string.ok) { _, _ ->
                     navigateToLogin()
                 }
@@ -95,7 +115,7 @@ class SearchResultsFragment : BaseFragment() {
     }
 
     private fun navigateToLogin() {
-        findNavController().navigate(SearchResultsFragmentDirections.actionSearchResultsFragmentToAuthenticationFragment())
+        findNavController().navigateSafe(SearchResultsFragmentDirections.actionSearchResultsFragmentToAuthenticationFragment())
     }
 
     private fun handleError(message: String) {
@@ -104,12 +124,12 @@ class SearchResultsFragment : BaseFragment() {
     }
 
     private fun handleSuccess(isLoading: Boolean, artists: List<Artist>) {
-        if (isLoading && artists.isNotEmpty()) {
+        if (isLoading) {
             showLoading()
         } else {
             hideLoading()
+            updateList(artists)
         }
-        updateList(artists)
     }
 
     private fun updateList(artists: List<Artist>) {
@@ -129,6 +149,16 @@ class SearchResultsFragment : BaseFragment() {
 
     private fun showLoading() {
         searchResultsSwipeToRefresh.isRefreshing = true
+    }
+
+    private fun showKeyboard() {
+        val imgr = activity?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
+        imgr?.showSoftInput(searchField, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    private fun hideKeyboard() {
+        val imgr = activity?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
+        imgr?.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     companion object {

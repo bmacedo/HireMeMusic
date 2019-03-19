@@ -34,9 +34,10 @@ class ViewModelModule {
     @Singleton
     fun providesSearchResultsViewModelFactory(
         searchResultsRepository: SearchResultsRepository,
+        authenticationRepository: AuthenticationRepository,
         resources: Resources
     ): SearchResultsViewModel.Factory {
-        return SearchResultsViewModel.Factory(searchResultsRepository, resources)
+        return SearchResultsViewModel.Factory(searchResultsRepository, authenticationRepository, resources)
     }
 
 }

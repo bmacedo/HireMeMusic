@@ -7,6 +7,7 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.bmacedo.hirememusic.R
 import com.bmacedo.hirememusic.base.BaseFragment
+import com.bmacedo.hirememusic.util.navigateSafe
 import kotlinx.android.synthetic.main.fragment_search.*
 
 @ContentView(R.layout.fragment_search)
@@ -16,7 +17,10 @@ class SearchFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         searchBar.setOnClickListener {
             val extras = FragmentNavigatorExtras(searchBar to "searchResultTransition")
-            findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToSearchResultsFragment(), extras)
+            findNavController().navigateSafe(
+                SearchFragmentDirections.actionSearchFragmentToSearchResultsFragment(),
+                extras
+            )
         }
     }
 }

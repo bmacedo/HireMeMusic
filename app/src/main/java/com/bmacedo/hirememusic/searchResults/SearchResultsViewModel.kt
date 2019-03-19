@@ -3,6 +3,7 @@ package com.bmacedo.hirememusic.searchResults
 import android.content.res.Resources
 import androidx.lifecycle.*
 import com.bmacedo.hirememusic.R
+import com.bmacedo.hirememusic.authentication.AuthenticationRepository
 import com.bmacedo.hirememusic.searchResults.model.Artist
 import com.bmacedo.hirememusic.searchResults.model.SearchResult
 import kotlinx.coroutines.CancellationException
@@ -12,6 +13,7 @@ import retrofit2.HttpException
 
 class SearchResultsViewModel(
     private val searchResultsRepository: SearchResultsRepository,
+    private val authenticationRepository: AuthenticationRepository,
     private val resources: Resources
 ) : ViewModel() {
 
@@ -73,10 +75,17 @@ class SearchResultsViewModel(
 
     private fun handleNetworkError(httpException: HttpException) {
         if (httpException.code() == 401) {
-            viewState.postValue(ViewState.AuthenticationError)
+            handleAuthenticationError()
         } else {
             val errorMessage = resources.getString(R.string.generic_error)
             viewState.postValue(ViewState.Error(errorMessage))
+        }
+    }
+
+    private fun handleAuthenticationError() {
+        viewModelScope.launch {
+            authenticationRepository.invalidateToken()
+            viewState.postValue(ViewState.AuthenticationError)
         }
     }
 
@@ -110,13 +119,14 @@ class SearchResultsViewModel(
      */
     class Factory(
         private val searchResultsRepository: SearchResultsRepository,
+        private val authenticationRepository: AuthenticationRepository,
         private val resources: Resources
     ) : ViewModelProvider.NewInstanceFactory() {
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(SearchResultsViewModel::class.java)) {
-                return SearchResultsViewModel(searchResultsRepository, resources) as T
+                return SearchResultsViewModel(searchResultsRepository, authenticationRepository, resources) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

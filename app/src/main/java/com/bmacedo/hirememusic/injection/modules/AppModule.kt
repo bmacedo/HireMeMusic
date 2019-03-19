@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Resources
 import android.preference.PreferenceManager
+import com.bmacedo.hirememusic.util.CoroutineContextProvider
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -34,4 +35,7 @@ class AppModule(private val application: Application) {
     @Singleton
     fun providesMoshi(): Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 
+    @Provides
+    @Singleton
+    fun providesCoroutineContextProvider(): CoroutineContextProvider = CoroutineContextProvider.Impl
 }

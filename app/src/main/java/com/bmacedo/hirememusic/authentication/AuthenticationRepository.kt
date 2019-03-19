@@ -2,16 +2,19 @@ package com.bmacedo.hirememusic.authentication
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import kotlinx.coroutines.Dispatchers
+import com.bmacedo.hirememusic.util.CoroutineContextProvider
 import kotlinx.coroutines.withContext
 
-class AuthenticationRepository(private val preferences: SharedPreferences) {
+class AuthenticationRepository(
+    private val preferences: SharedPreferences,
+    private val coroutineContextProvider: CoroutineContextProvider
+) {
 
     /**
      * Returns true if the user has a valid access token
      */
     suspend fun isLoggedIn(): Boolean =
-        withContext(Dispatchers.IO) {
+        withContext(coroutineContextProvider.IO) {
             val token = getToken()
             !token.isNullOrBlank()
         }
@@ -20,11 +23,18 @@ class AuthenticationRepository(private val preferences: SharedPreferences) {
      * Store the user access token for further accesses
      */
     suspend fun saveToken(token: String) {
-        withContext(Dispatchers.IO) {
+        withContext(coroutineContextProvider.IO) {
             preferences.edit {
                 putString(ACCESS_TOKEN_KEY, token)
             }
         }
+    }
+
+    /**
+     * Removes the stored access token
+     */
+    suspend fun invalidateToken() {
+        saveToken("")
     }
 
     /**

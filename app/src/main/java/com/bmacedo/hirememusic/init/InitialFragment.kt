@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.bmacedo.hirememusic.R
 import com.bmacedo.hirememusic.base.BaseFragment
+import com.bmacedo.hirememusic.util.navigateSafe
 import com.bmacedo.hirememusic.util.observe
 import kotlinx.android.synthetic.main.fragment_initial.*
 import javax.inject.Inject
@@ -34,11 +35,11 @@ class InitialFragment : BaseFragment() {
     }
 
     private fun navigateToAuthentication() {
-        findNavController().navigate(InitialFragmentDirections.actionInitialFragmentToAuthenticationFragment())
+        findNavController().navigateSafe(InitialFragmentDirections.actionInitialFragmentToAuthenticationFragment())
     }
 
     private fun navigateToSearch() {
-        findNavController().navigate(InitialFragmentDirections.actionInitialFragmentToSearchFragment())
+        findNavController().navigateSafe(InitialFragmentDirections.actionInitialFragmentToSearchFragment())
     }
 
 }
