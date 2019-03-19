@@ -9,16 +9,17 @@
     </style>
 
     <!-- Search -->
-    <style name="SearchTitle">
-        <item name="android:layout_marginTop">@dimen/search_title_margin_vertical</item>
-        <item name="android:textSize">@dimen/search_title_text_size</item>
+    <style name="BaseTitle">
+        <item name="android:textSize">@dimen/title_text_size</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
 
-    <style name="SearchResultTitle">
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">@dimen/search_result_title_text_size</item>
-        <item name="android:textStyle">bold</item>
+    <style name="SearchTitle" parent="BaseTitle">
+        <item name="android:layout_marginTop">@dimen/search_title_margin_vertical</item>
+    </style>
+
+    <style name="SearchResultTitle" parent="BaseTitle">
     </style>
 </resources>
