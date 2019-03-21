@@ -4,9 +4,12 @@
     <dimen name="card_elevation">4dp</dimen>
     <dimen name="title_text_size">32sp</dimen>
 
+    <!-- Authentication -->
+    <dimen name="ic_logo_spotify_padding">12dp</dimen>
+    <dimen name="app_title_text_size">40sp</dimen>
+
     <!-- Search -->
     <dimen name="search_title_margin_vertical">32dp</dimen>
-    <dimen name="search_title_text_size">32sp</dimen>
     <dimen name="search_bar_margin">20dp</dimen>
     <dimen name="search_hint_margin_vertical">4dp</dimen>
     <dimen name="search_hint_margin_horizontal">10dp</dimen>
@@ -20,7 +23,6 @@
     <dimen name="artist_card_internal_margin">8dp</dimen>
     <dimen name="artist_image_height">300dp</dimen>
     <dimen name="artist_vertical_spacing">8dp</dimen>
-    <dimen name="search_result_title_text_size">32sp</dimen>
     <dimen name="search_results_empty_state_vertical_spacing">16dp</dimen>
     <dimen name="search_results_empty_state_gif_size">150dp</dimen>
     <dimen name="search_button_margin_horizontal">8dp</dimen>

@@ -12,9 +12,9 @@ abstract class BaseFragment : Fragment() {
         super.onAttach(context)
     }
 
-    protected fun showError(errorMessage: String) {
+    protected fun showSnackMessage(message: String) {
         view?.let { view ->
-            Snackbar.make(view, errorMessage, Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show()
         }
     }
 }

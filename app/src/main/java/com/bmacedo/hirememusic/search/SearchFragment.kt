@@ -15,12 +15,20 @@ class SearchFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setSearchBarClickListener()
+    }
+
+    private fun setSearchBarClickListener() {
         searchBar.setOnClickListener {
-            val extras = FragmentNavigatorExtras(searchBar to "searchResultTransition")
-            findNavController().navigateSafe(
-                SearchFragmentDirections.actionSearchFragmentToSearchResultsFragment(),
-                extras
-            )
+            navigateToSearchResults()
         }
+    }
+
+    private fun navigateToSearchResults() {
+        val extras = FragmentNavigatorExtras(searchBar to "searchResultTransition")
+        findNavController().navigateSafe(
+            SearchFragmentDirections.actionSearchFragmentToSearchResultsFragment(),
+            extras
+        )
     }
 }

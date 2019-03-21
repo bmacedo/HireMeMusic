@@ -1,12 +1,15 @@
 <resources>
+
     <!-- General -->
     <string name="app_name">Hire Me Music</string>
     <string name="ok">OK</string>
     <string name="generic_error">An unknown error occurred. Please try one more time.</string>
+    <string name="generic_network_error">A network error occurred. Please try one more time.</string>
     <string name="authentication_error_message">Please log in again with your Spotify account</string>
 
     <!-- Authentication -->
     <string name="log_in_label">Log in with Spotify</string>
+    <string name="log_in_cancelled">Log in cancelled</string>
 
     <!-- Search -->
     <string name="search_label">Search</string>
@@ -20,6 +23,5 @@
     <string name="com_spotify_sdk_redirect_scheme">hirememusic</string>
     <string name="com_spotify_sdk_redirect_host">callback</string>
     <string name="welcome_text">Hire Me Music</string>
-
 
 </resources>

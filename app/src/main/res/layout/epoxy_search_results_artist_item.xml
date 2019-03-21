@@ -21,7 +21,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/artist_image_height"
         android:layout_marginTop="@dimen/artist_card_external_margin"
         android:layout_marginBottom="@dimen/artist_card_external_margin"
         android:onClick="@{onArtistClicked}"
@@ -29,23 +29,23 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/artist_image_height">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/artist_image"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/artist_image_height"
+                android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/artist_vertical_spacing"
                 android:layout_marginBottom="@dimen/artist_vertical_spacing"
                 android:background="@color/colorAccent"
                 android:contentDescription="@{artist.name}"
                 android:scaleType="centerCrop"
                 app:imageUrl="@{artist.thumbnailUrl()}"
-                tools:src="@drawable/ic_launcher_foreground" />
+                tools:src="@drawable/logo" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/artist_image_height"
+                android:layout_height="match_parent"
                 android:background="@drawable/gradient" />
 
             <TextView
@@ -53,12 +53,8 @@
                 style="@style/SearchResultTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|start"
-                android:gravity="bottom|start"
-                android:paddingStart="@dimen/artist_card_internal_margin"
-                android:paddingTop="@dimen/artist_card_internal_margin"
-                android:paddingEnd="@dimen/artist_card_internal_margin"
-                android:paddingBottom="@dimen/artist_card_internal_margin"
+                android:layout_gravity="bottom"
+                android:padding="@dimen/artist_card_internal_margin"
                 android:text="@{artist.name}"
                 tools:text="Pink Floyd" />
 

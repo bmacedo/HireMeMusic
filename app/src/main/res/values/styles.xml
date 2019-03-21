@@ -6,9 +6,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorPrimaryDark</item>
     </style>
 
-    <!-- Search -->
+    <!-- General -->
     <style name="BaseTitle">
         <item name="android:textSize">@dimen/title_text_size</item>
         <item name="android:textStyle">bold</item>
@@ -16,9 +17,21 @@
         <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
 
-    <style name="SearchTitle" parent="BaseTitle">
-        <item name="android:layout_marginTop">@dimen/search_title_margin_vertical</item>
+    <!-- Authentication -->
+    <style name="AppTitle" parent="BaseTitle">
+        <item name="android:textSize">@dimen/app_title_text_size</item>
     </style>
 
+    <style name="SpotifyButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/bg_btn_spotify</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:padding">@dimen/login_button_margin</item>
+    </style>
+
+    <!-- Search -->
+    <style name="SearchTitle" parent="BaseTitle" />
+
     <style name="SearchResultTitle" parent="BaseTitle" />
+
 </resources>

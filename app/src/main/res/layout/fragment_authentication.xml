@@ -1,63 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="@android:color/black"
-    android:animateLayoutChanges="true">
+    tools:ignore="Overdraw">
 
     <TextView
-        android:id="@+id/wecomeText"
-        style="@style/SearchResultTitle"
+        android:id="@+id/authWelcomeText"
+        style="@style/AppTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/welcome_text"
-        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.25" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/loginButton"
-        android:background="@color/spotify_green"
-        app:cardCornerRadius="@dimen/login_button_corner_radius"
+    <Button
+        android:id="@+id/authLoginButton"
+        style="@style/SpotifyButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:drawableStart="@drawable/ic_logo_spotify"
+        android:drawablePadding="@dimen/ic_logo_spotify_padding"
+        android:text="@string/log_in_label"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wecomeText">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:background="@color/spotify_green"
-            android:gravity="center"
-            android:padding="@dimen/login_button_margin"
-            android:text="@string/log_in_label"
-            android:textColor="@android:color/white" />
-
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintTop_toBottomOf="@+id/authWelcomeText" />
 
     <androidx.core.widget.ContentLoadingProgressBar
-        android:id="@+id/loading"
+        android:id="@+id/authLoading"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:indeterminateTint="@color/spotify_green"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/loginButton"
+        app:layout_constraintBottom_toTopOf="@+id/authLoginButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wecomeText" />
+        app:layout_constraintTop_toBottomOf="@+id/authWelcomeText"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

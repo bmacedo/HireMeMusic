@@ -24,9 +24,13 @@ class InitialFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeViewState()
+    }
+
+    private fun observeViewState() {
         viewModel.isLoggedIn().observe(this) { viewState ->
             when (viewState) {
-                InitialViewModel.ViewState.LOADING -> loading.visibility = View.VISIBLE
+                InitialViewModel.ViewState.LOADING -> showLoading()
                 InitialViewModel.ViewState.LOGGED_IN -> navigateToSearch()
                 InitialViewModel.ViewState.LOGGED_OUT -> navigateToAuthentication()
                 null -> throw IllegalStateException("InitialViewState should not be null")
@@ -34,12 +38,16 @@ class InitialFragment : BaseFragment() {
         }
     }
 
-    private fun navigateToAuthentication() {
-        findNavController().navigateSafe(InitialFragmentDirections.actionInitialFragmentToAuthenticationFragment())
+    private fun showLoading() {
+        initialLoading.show()
     }
 
     private fun navigateToSearch() {
         findNavController().navigateSafe(InitialFragmentDirections.actionInitialFragmentToSearchFragment())
+    }
+
+    private fun navigateToAuthentication() {
+        findNavController().navigateSafe(InitialFragmentDirections.actionInitialFragmentToAuthenticationFragment())
     }
 
 }

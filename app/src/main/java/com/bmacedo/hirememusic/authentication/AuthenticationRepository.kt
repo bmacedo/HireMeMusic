@@ -20,7 +20,7 @@ class AuthenticationRepository(
         }
 
     /**
-     * Store the user access token for further accesses
+     * Stores the user access token for further accesses
      */
     suspend fun saveToken(token: String) {
         withContext(coroutineContextProvider.IO) {
@@ -38,7 +38,7 @@ class AuthenticationRepository(
     }
 
     /**
-     * Retrieve the current access token
+     * Retrieves the current access token
      */
     fun getToken(): String? = preferences.getString(ACCESS_TOKEN_KEY, "")
 

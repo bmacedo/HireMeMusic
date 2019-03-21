@@ -40,7 +40,7 @@ class SearchResultsFragment : BaseFragment() {
         sharedElementReturnTransition = ChangeBounds().apply {
             duration = ANIMATION_DURATION_IN_MILLIS
         }
-        return inflater.inflate(com.bmacedo.hirememusic.R.layout.fragment_search_results, container, false)
+        return inflater.inflate(R.layout.fragment_search_results, container, false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -120,7 +120,7 @@ class SearchResultsFragment : BaseFragment() {
 
     private fun handleError(message: String) {
         hideLoading()
-        showError(message)
+        showSnackMessage(message)
     }
 
     private fun handleSuccess(isLoading: Boolean, artists: List<Artist>) {

@@ -27,10 +27,20 @@ class AuthenticationFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loginButton.setOnClickListener {
+        setLoginButtonClickListener()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val response = AuthenticationClient.getResponse(resultCode, data)
+        viewModel.onAuthenticationResult(requestCode, response)
+    }
+
+    private fun setLoginButtonClickListener() {
+        authLoginButton.setOnClickListener {
             viewModel.login(this).observe(this) { viewState ->
                 when (viewState) {
-                    AuthenticationViewModel.ViewState.Loading -> handleAuthenticationLoading()
+                    AuthenticationViewModel.ViewState.Loading -> showLoading()
                     AuthenticationViewModel.ViewState.Cancelled -> handleAuthenticationCancelled()
                     is AuthenticationViewModel.ViewState.Success -> handleAuthenticationSuccess()
                     is AuthenticationViewModel.ViewState.Error -> handleAuthenticationError(viewState.message)
@@ -40,17 +50,10 @@ class AuthenticationFragment : BaseFragment() {
         }
     }
 
-    private fun handleAuthenticationLoading() {
-        loading.show()
-        loginButton.visibility = View.INVISIBLE
+    private fun handleAuthenticationCancelled() {
+        showSnackMessage(getString(R.string.log_in_cancelled))
+        hideLoading()
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        val response = AuthenticationClient.getResponse(resultCode, data)
-        viewModel.onAuthenticationResult(requestCode, response)
-    }
-
 
     private fun handleAuthenticationSuccess() {
         findNavController().navigateSafe(AuthenticationFragmentDirections.actionAuthenticationFragmentToSearchFragment())
@@ -58,13 +61,18 @@ class AuthenticationFragment : BaseFragment() {
 
     private fun handleAuthenticationError(error: String?) {
         Timber.d(error)
-        loading.hide()
-        loginButton.visibility = View.VISIBLE
+        error?.let { showSnackMessage(error) }
+        hideLoading()
     }
 
-    private fun handleAuthenticationCancelled() {
-        loading.hide()
-        loginButton.visibility = View.VISIBLE
+    private fun showLoading() {
+        authLoading.show()
+        authLoginButton.visibility = View.INVISIBLE
+    }
+
+    private fun hideLoading() {
+        authLoading.hide()
+        authLoginButton.visibility = View.VISIBLE
     }
 
 }

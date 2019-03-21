@@ -28,7 +28,7 @@ class SearchResultsViewModel(
         if (job != null) {
             job?.cancel()
         }
-        viewState.postValue(ViewState.Success(isLoading = true, artists = latestLResults()))
+        viewState.postValue(ViewState.Success(isLoading = true, artists = latestResults()))
         job = viewModelScope.launch {
             latestQuery = query
             try {
@@ -47,9 +47,10 @@ class SearchResultsViewModel(
     /**
      * Returns more artists for the same query. Allows for pagination.
      */
-    fun queryForMore() {
-        // TODO
-    }
+//    // TODO: pagination
+//    fun queryForMore() {
+//
+//    }
 
     /**
      * Queries the same artist again, starting from the first page
@@ -77,7 +78,7 @@ class SearchResultsViewModel(
         if (httpException.code() == 401) {
             handleAuthenticationError()
         } else {
-            val errorMessage = resources.getString(R.string.generic_error)
+            val errorMessage = resources.getString(R.string.generic_network_error)
             viewState.postValue(ViewState.Error(errorMessage))
         }
     }
@@ -89,7 +90,7 @@ class SearchResultsViewModel(
         }
     }
 
-    private fun latestLResults(): List<Artist> {
+    private fun latestResults(): List<Artist> {
         val state = viewState.value
         if (state is ViewState.Success) {
             return state.artists

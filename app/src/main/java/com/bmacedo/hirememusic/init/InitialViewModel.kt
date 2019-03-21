@@ -41,7 +41,9 @@ class InitialViewModel(private val authRepository: AuthenticationRepository) : V
     /**
      * Factory class for the ViewModel
      */
-    class Factory(private val authRepository: AuthenticationRepository) : ViewModelProvider.NewInstanceFactory() {
+    class Factory(
+        private val authRepository: AuthenticationRepository
+    ) : ViewModelProvider.NewInstanceFactory() {
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {

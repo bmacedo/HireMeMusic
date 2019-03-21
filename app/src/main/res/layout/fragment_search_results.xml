@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorPrimary"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -30,6 +29,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="center_vertical|end"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/search_label"
                 android:paddingStart="@dimen/search_button_margin_horizontal"
                 android:paddingEnd="@dimen/search_button_margin_horizontal"
@@ -44,7 +44,6 @@
                 android:gravity="center"
                 android:imeOptions="actionSearch"
                 android:inputType="textCapSentences"
-                android:maxLines="1"
                 android:singleLine="true"
                 app:backgroundTint="@android:color/transparent">
 
@@ -92,8 +91,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/search_results_empty_state_vertical_spacing"
                     android:gravity="center"
-                    android:textColor="@android:color/white"
-                    android:text="@string/search_results_empty_state" />
+                    android:text="@string/search_results_empty_state"
+                    android:textColor="@android:color/white" />
 
             </LinearLayout>
 

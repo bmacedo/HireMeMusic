@@ -14,7 +14,7 @@ fun loadImage(view: ImageView, url: String?) {
         view.setImageDrawable(
             ResourcesCompat.getDrawable(
                 view.context.resources,
-                R.drawable.ic_launcher_foreground,
+                R.drawable.logo,
                 null
             )
         )
