@@ -1,6 +1,7 @@
 package com.bmacedo.hirememusic.authentication
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.ContentView
@@ -38,7 +39,7 @@ class AuthenticationFragment : BaseFragment() {
 
     private fun setLoginButtonClickListener() {
         authLoginButton.setOnClickListener {
-            viewModel.login(this).observe(this) { viewState ->
+            viewModel.login(this, getRedirectUri().toString()).observe(this) { viewState ->
                 when (viewState) {
                     AuthenticationViewModel.ViewState.Loading -> showLoading()
                     AuthenticationViewModel.ViewState.Cancelled -> handleAuthenticationCancelled()
@@ -48,6 +49,13 @@ class AuthenticationFragment : BaseFragment() {
                 }
             }
         }
+    }
+
+    private fun getRedirectUri(): Uri {
+        return Uri.Builder()
+            .scheme(resources.getString(R.string.com_spotify_sdk_redirect_scheme))
+            .authority(resources.getString(R.string.com_spotify_sdk_redirect_host))
+            .build()
     }
 
     private fun handleAuthenticationCancelled() {

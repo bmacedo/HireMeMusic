@@ -22,6 +22,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -57,7 +60,9 @@ ext {
             mockitoKotlin   : "1.6.0",
             dexOpener       : "2.0.1",
             testRunner      : "1.1.2-alpha02",
-            espresso        : "3.2.0-alpha02"
+            espresso        : "3.2.0-alpha02",
+            coreTesting     : "2.0.1",
+            liveDataTesting : "1.1.0"
     ]
 }
 
@@ -124,6 +129,8 @@ dependencies {
 
     // Unit Test
     testImplementation "junit:junit:$versions.jUnit"
+    testImplementation "androidx.arch.core:core-testing:$versions.coreTesting"
+    testImplementation "com.jraska.livedata:testing-ktx:$versions.liveDataTesting"
     testImplementation "org.mockito:mockito-core:$versions.mockito"
     testImplementation "com.nhaarman:mockito-kotlin:$versions.mockitoKotlin"
     testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
@@ -142,6 +149,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:$versions.espresso"
     androidTestImplementation "androidx.test.espresso.idling:idling-net:$versions.espresso"
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutines"
+    androidTestImplementation "androidx.arch.core:core-testing:$versions.coreTesting"
     androidTestImplementation "androidx.test:runner:$versions.testRunner"
     androidTestImplementation "androidx.test:rules:$versions.testRunner"
 

@@ -1,10 +1,11 @@
 package com.bmacedo.hirememusic.authentication
 
 import android.content.res.Resources
-import android.net.Uri
+import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import com.bmacedo.hirememusic.R
+import com.bmacedo.hirememusic.util.CoroutineContextProvider
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
@@ -12,6 +13,7 @@ import kotlinx.coroutines.launch
 
 class AuthenticationViewModel(
     private val authRepository: AuthenticationRepository,
+    private val coroutineContextProvider: CoroutineContextProvider,
     private val resources: Resources
 ) : ViewModel() {
 
@@ -21,13 +23,13 @@ class AuthenticationViewModel(
      * Starts the Spotify Authentication flow.
      * The result will be received into the caller [Fragment.onActivityResult]
      */
-    fun login(fragment: Fragment): LiveData<ViewState> {
+    fun login(fragment: Fragment, redirectUrl: String): LiveData<ViewState> {
         if (!::viewState.isInitialized) {
             viewState = MutableLiveData()
         }
         if (viewState.value != ViewState.Loading) {
             viewState.postValue(ViewState.Loading)
-            loginWithSpotify(fragment)
+            loginWithSpotify(fragment, redirectUrl)
         }
         return viewState
     }
@@ -61,30 +63,23 @@ class AuthenticationViewModel(
         }
     }
 
-    private fun loginWithSpotify(fragment: Fragment) {
-        val request = authenticationRequest()
+    private fun loginWithSpotify(fragment: Fragment, redirectUrl: String) {
+        val request = authenticationRequest(redirectUrl)
         val intent = AuthenticationClient.createLoginActivityIntent(fragment.activity, request)
         fragment.startActivityForResult(intent, AUTH_TOKEN_REQUEST_CODE)
     }
 
-    private fun authenticationRequest(): AuthenticationRequest? {
+    private fun authenticationRequest(redirectUrl: String): AuthenticationRequest? {
         val clientId = resources.getString(R.string.SPOTIFY_API_KEY)
         val responseType = AuthenticationResponse.Type.TOKEN
-        return AuthenticationRequest.Builder(clientId, responseType, getRedirectUri().toString())
+        return AuthenticationRequest.Builder(clientId, responseType, redirectUrl)
             .setShowDialog(false)
-            .build()
-    }
-
-    private fun getRedirectUri(): Uri {
-        return Uri.Builder()
-            .scheme(resources.getString(R.string.com_spotify_sdk_redirect_scheme))
-            .authority(resources.getString(R.string.com_spotify_sdk_redirect_host))
             .build()
     }
 
 
     private fun saveToken(token: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(coroutineContextProvider.IO) {
             authRepository.saveToken(token)
             viewState.postValue(ViewState.Success)
         }
@@ -105,19 +100,21 @@ class AuthenticationViewModel(
      */
     class Factory(
         private val authRepository: AuthenticationRepository,
+        private val coroutineContextProvider: CoroutineContextProvider,
         private val resources: Resources
     ) : ViewModelProvider.NewInstanceFactory() {
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(AuthenticationViewModel::class.java)) {
-                return AuthenticationViewModel(authRepository, resources) as T
+                return AuthenticationViewModel(authRepository, coroutineContextProvider, resources) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
     }
 
     companion object {
-        private const val AUTH_TOKEN_REQUEST_CODE = 0x10
+        @VisibleForTesting
+        const val AUTH_TOKEN_REQUEST_CODE = 0x10
     }
 }
