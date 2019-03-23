@@ -22,10 +22,11 @@ class SearchResultsListController : EpoxyController() {
                 id(artist.id)
                 artist(artist)
                 onArtistClicked { view ->
-                    if (artist.artistUrl.isNotBlank()) {
+                    val url = artist.externalUrl()
+                    if (!url.isNullOrBlank()) {
                         val context = view.context
                         val intent = Intent(Intent.ACTION_VIEW)
-                        intent.data = Uri.parse(artist.artistUrl)
+                        intent.data = Uri.parse(url)
                         context?.startActivity(intent)
                     }
                 }

@@ -28,19 +28,23 @@ class SearchResultsViewModel(
         if (job != null) {
             job?.cancel()
         }
-        viewState.postValue(ViewState.Success(isLoading = true, artists = latestResults()))
-        job = viewModelScope.launch {
-            latestQuery = query
-            try {
-                val results = searchResultsRepository.searchArtists(query)
-                handleSuccess(results)
-            } catch (cancellationException: CancellationException) {
-                // nothing to do here. Suppress the exception since this is the normal flow
-            } catch (httpException: HttpException) {
-                handleNetworkError(httpException)
-            } catch (exception: Exception) {
-                handleGenericError(exception)
+        if (query.isNotEmpty()) {
+            viewState.postValue(ViewState.Success(isLoading = true, artists = latestResults()))
+            job = viewModelScope.launch {
+                latestQuery = query
+                try {
+                    val results = searchResultsRepository.searchArtists(query)
+                    handleSuccess(results)
+                } catch (cancellationException: CancellationException) {
+                    // nothing to do here. Suppress the exception since this is the normal flow
+                } catch (httpException: HttpException) {
+                    handleNetworkError(httpException)
+                } catch (exception: Exception) {
+                    handleGenericError(exception)
+                }
             }
+        } else {
+            viewState.postValue(ViewState.Success(isLoading = false, artists = latestResults()))
         }
     }
 

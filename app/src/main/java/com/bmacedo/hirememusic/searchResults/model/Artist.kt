@@ -22,4 +22,14 @@ data class Artist(
         return null
     }
 
+    /**
+     * Returns the external URL thar contains more information about the artist
+     */
+    fun externalUrl(): String? {
+        if (urlMap.isNotEmpty()) {
+            return urlMap.values.firstOrNull()
+        }
+        return null
+    }
+
 }

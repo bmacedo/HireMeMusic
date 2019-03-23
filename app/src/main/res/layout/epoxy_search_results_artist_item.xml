@@ -24,6 +24,7 @@
         android:layout_height="@dimen/artist_image_height"
         android:layout_marginTop="@dimen/artist_card_external_margin"
         android:layout_marginBottom="@dimen/artist_card_external_margin"
+        app:cardCornerRadius="@dimen/artist_card_corner_radius"
         android:onClick="@{onArtistClicked}"
         app:elevation="@dimen/card_elevation">
 
@@ -35,9 +36,7 @@
                 android:id="@+id/artist_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/artist_vertical_spacing"
-                android:layout_marginBottom="@dimen/artist_vertical_spacing"
-                android:background="@color/colorAccent"
+                android:background="@drawable/placeholder"
                 android:contentDescription="@{artist.name}"
                 android:scaleType="centerCrop"
                 app:imageUrl="@{artist.thumbnailUrl()}"

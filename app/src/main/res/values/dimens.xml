@@ -7,6 +7,8 @@
     <!-- Authentication -->
     <dimen name="ic_logo_spotify_padding">12dp</dimen>
     <dimen name="app_title_text_size">40sp</dimen>
+    <dimen name="login_button_corner_radius">10dp</dimen>
+    <dimen name="login_button_margin">10dp</dimen>
 
     <!-- Search -->
     <dimen name="search_title_margin_vertical">32dp</dimen>
@@ -20,13 +22,12 @@
     <dimen name="artist_card_external_margin">4dp</dimen>
 
     <!-- Search Result Item -->
+    <dimen name="artist_card_corner_radius">4dp</dimen>
     <dimen name="artist_card_internal_margin">8dp</dimen>
     <dimen name="artist_image_height">300dp</dimen>
     <dimen name="artist_vertical_spacing">8dp</dimen>
     <dimen name="search_results_empty_state_vertical_spacing">16dp</dimen>
     <dimen name="search_results_empty_state_gif_size">150dp</dimen>
     <dimen name="search_button_margin_horizontal">8dp</dimen>
-    <dimen name="login_button_corner_radius">10dp</dimen>
-    <dimen name="login_button_margin">10dp</dimen>
 
 </resources>
