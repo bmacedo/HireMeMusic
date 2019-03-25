@@ -8,5 +8,10 @@ import retrofit2.http.Query
 interface SpotifyApi {
 
     @GET("v1/search")
-    fun search(@Query("q") query: String, @Query("type") queryType: String): Deferred<SearchResult>
+    fun search(
+        @Query("q") query: String,
+        @Query("type") queryType: String,
+        @Query("offset") offset: Int,
+        @Query("offset") limit: Int
+    ): Deferred<SearchResult>
 }

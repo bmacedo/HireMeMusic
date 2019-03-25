@@ -17,6 +17,17 @@ class SearchResultsViewModel(
     private val resources: Resources
 ) : ViewModel() {
 
+    /**
+     * Returns the index of the list item last visible
+     */
+    var lastVisibleItem: Int = 0
+    /**
+     * Returns the number of items already loaded
+     */
+    var totalItemCount: Int = 0
+
+    private var pageNumber = 1
+    private var total = 0
     private val viewState: MutableLiveData<ViewState> = MutableLiveData()
     private var latestQuery: String = ""
     private var job: Job? = null
@@ -24,7 +35,7 @@ class SearchResultsViewModel(
     /**
      * Starts the search for a list of [Artist] with a given query
      */
-    fun queryArtist(query: String) {
+    fun queryArtist(query: String, page: Int = 1) {
         if (job != null) {
             job?.cancel()
         }
@@ -33,7 +44,8 @@ class SearchResultsViewModel(
             job = viewModelScope.launch {
                 latestQuery = query
                 try {
-                    val results = searchResultsRepository.searchArtists(query)
+                    val results =
+                        searchResultsRepository.searchArtists(query = query, pageNumber = page, pageSize = PAGE_SIZE)
                     handleSuccess(results)
                 } catch (cancellationException: CancellationException) {
                     // nothing to do here. Suppress the exception since this is the normal flow
@@ -51,27 +63,34 @@ class SearchResultsViewModel(
     /**
      * Returns more artists for the same query. Allows for pagination.
      */
-//    // TODO: pagination
-//    fun queryForMore() {
-//
-//    }
+    fun queryForMore() {
+        if (totalItemCount < total) {
+            pageNumber++
+            queryArtist(latestQuery, pageNumber)
+        }
+    }
 
     /**
      * Queries the same artist again, starting from the first page
      */
     fun resetSearch() {
+        pageNumber = 1
         queryArtist(latestQuery)
+    }
+
+    /**
+     * Returns true if should load next page
+     */
+    fun shouldLoadNextPage(): Boolean {
+        val state = viewState.value
+        val isLoading = (state is ViewState.Success) && state.isLoading
+        return !isLoading && totalItemCount < total && totalItemCount <= lastVisibleItem + VISIBLE_THRESHOLD
     }
 
     /**
      * Returns the current view state
      */
     fun viewState(): LiveData<ViewState> = viewState
-
-    private fun handleSuccess(results: SearchResult) {
-        val artists = results.artists.items
-        viewState.postValue(ViewState.Success(isLoading = false, artists = artists))
-    }
 
     private fun handleGenericError(exception: Exception) {
         val errorMessage = exception.message ?: resources.getString(R.string.generic_error)
@@ -94,12 +113,28 @@ class SearchResultsViewModel(
         }
     }
 
+    private fun handleSuccess(results: SearchResult) {
+        this.total = results.artists.total
+        val artists = appendWithPreviousPages(results.artists.items)
+        viewState.postValue(ViewState.Success(isLoading = false, artists = artists))
+    }
+
     private fun latestResults(): List<Artist> {
         val state = viewState.value
         if (state is ViewState.Success) {
             return state.artists
         }
         return emptyList()
+    }
+
+    private fun appendWithPreviousPages(articles: List<Artist>): List<Artist> {
+        val state = viewState.value
+        val previousArtists = if (state is ViewState.Success && pageNumber > 1) {
+            state.artists
+        } else {
+            mutableListOf()
+        }
+        return previousArtists + articles
     }
 
     /**
@@ -135,5 +170,10 @@ class SearchResultsViewModel(
             }
             throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
+    }
+
+    companion object {
+        private const val PAGE_SIZE = 20
+        private const val VISIBLE_THRESHOLD = 1
     }
 }

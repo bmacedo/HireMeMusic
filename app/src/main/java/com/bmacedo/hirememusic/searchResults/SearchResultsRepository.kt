@@ -8,8 +8,9 @@ class SearchResultsRepository(private val api: SpotifyApi) {
     /**
      * Search for artists by name
      */
-    suspend fun searchArtists(query: String): SearchResult {
+    suspend fun searchArtists(query: String, pageNumber: Int = 1, pageSize: Int = 20): SearchResult {
         val queryType = "artist"
-        return api.search(query, queryType).await()
+        val offset = (pageNumber - 1) * pageSize
+        return api.search(query, queryType, offset, pageSize).await()
     }
 }

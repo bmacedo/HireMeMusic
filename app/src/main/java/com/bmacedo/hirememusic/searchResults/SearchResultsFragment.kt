@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.ChangeBounds
 import com.bmacedo.hirememusic.R
 import com.bmacedo.hirememusic.base.BaseFragment
@@ -85,8 +86,20 @@ class SearchResultsFragment : BaseFragment() {
     }
 
     private fun setUpList() {
-        searchResultList.layoutManager = LinearLayoutManager(context)
+        val layoutManager = LinearLayoutManager(context)
+        searchResultList.layoutManager = layoutManager
         searchResultList.adapter = listController.adapter
+        searchResultList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                viewModel.totalItemCount = layoutManager.itemCount
+                viewModel.lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+                if (viewModel.shouldLoadNextPage()) {
+                    viewModel.queryForMore()
+                }
+            }
+        })
         searchResultsSwipeToRefresh.setOnRefreshListener {
             viewModel.resetSearch()
         }
