@@ -70,7 +70,7 @@ class SearchResultsFragment : BaseFragment() {
         searchButton.setOnClickListener {
             searchArtist(searchField.text.toString())
         }
-        searchField.setOnEditorActionListener { textView, actionId, event ->
+        searchField.setOnEditorActionListener { textView, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 searchArtist(textView.text.toString())
                 return@setOnEditorActionListener true

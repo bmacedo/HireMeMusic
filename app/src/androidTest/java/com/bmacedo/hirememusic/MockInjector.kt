@@ -6,8 +6,9 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.DispatchingAndroidInjector_Factory
 import javax.inject.Provider
 
-inline fun <reified T : Fragment> createFakeFragmentInjector(crossinline block: T.() -> Unit)
-        : DispatchingAndroidInjector<Fragment> {
+inline fun <reified T : Fragment> createFakeFragmentInjector(
+    crossinline block: T.() -> Unit
+): DispatchingAndroidInjector<Fragment> {
     val injector = AndroidInjector<Fragment> { instance ->
         if (instance is T) {
             instance.block()

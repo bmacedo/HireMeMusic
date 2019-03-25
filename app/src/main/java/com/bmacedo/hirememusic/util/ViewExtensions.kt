@@ -6,7 +6,7 @@ import androidx.databinding.BindingAdapter
 import com.bmacedo.hirememusic.R
 import com.bumptech.glide.Glide
 
-@BindingAdapter("app:imageUrl")
+@BindingAdapter("imageUrl")
 fun loadImage(view: ImageView, url: String?) {
     if (url != null && url.isNotEmpty()) {
         Glide.with(view.context).load(url).into(view)
