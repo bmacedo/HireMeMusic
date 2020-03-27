@@ -2,16 +2,26 @@
 
 buildscript {
     ext.kotlin_version = '1.3.21'
+    ext.voiGradlePlugin = '0.6.7'
     repositories {
+        mavenLocal()
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
+        maven {
+            credentials {
+                username "$voi_maven_user"
+                password "$voi_maven_password"
+            }
+            url "https://voi-maven.appspot.com/"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.2.0'
         classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.0.0'
+        classpath "io.voiapp.android.commons:gradle_scripts:$rootProject.voiGradlePlugin"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
